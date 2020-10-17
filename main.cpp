@@ -1,57 +1,44 @@
 #include <iostream>
 #include <fstream>
-#include <cstring>
 #include "Picture.h"
 #include "Square.h"
 #include "Circle.h"
+#include <optional>
 
 namespace checker {
     template<typename T>
-    static std::pair<bool, std::string> checkOne(const Picture &pic) {
+    static std::optional<std::string> checkOne(const Picture &pic) {
         Picture templatePicture = T::drawShape(pic.height(), pic.width());
         if (templatePicture.compare(pic) >= 0.93) {
-            return {true, T::printInfo(pic)};
+            return std::make_optional(T::printInfo(pic));
         } else {
-            return {false, ""};
+            return std::nullopt;
         }
     }
 
     template<typename Arg>
-    static std::pair<bool, std::string> checkFigures(const Picture &i) {
+    static std::optional<std::string> checkFigures(const Picture &i) {
         return checkOne<Arg>(i);
     }
 
-    std::pair<bool, std::string>
-    uniteResults(const std::pair<bool, std::string> &a, const std::pair<bool, std::string> &b) {
-        std::string ansStr;
-        if (a.first && b.first) {
-            ansStr = a.second + "\nили\n" + b.second;
-        } else {
-            if (a.first) {
-                ansStr = a.second;
-            }
-            if (b.first) {
-                ansStr = b.second;
-            }
-        }
-        return {a.first || b.first, ansStr};
-    }
-
     template<typename Arg, typename Arg1, typename... Args>
-    static std::pair<bool, std::string> checkFigures(const Picture &i) {
+    static std::optional<std::string> checkFigures(const Picture &i) {
         auto ans = checkOne<Arg>(i);
-        return uniteResults(checkOne<Arg>(i), checkFigures<Arg1, Args...>(i));
+        if (ans.has_value()) {
+            return ans;
+        } else {
+            return checkFigures<Arg1, Args...>(i);
+        }
     }
 }
 
 Picture readDataFromFile(const std::string& path) {
     std::ifstream myFile;
     myFile.open(path);
-    char *data = new char[225];
+    char *data = new char[226];
     for (int i = 0; i < 15; ++i) {
-        std::string a;
-        myFile >> a;
-        strcpy(data + i * 15, a.c_str());
+        myFile.read(data + i * 15, 15);
+        myFile.ignore(1);
     }
     Picture pic(15, 15);
     pic.set(data, data + 225);
@@ -86,9 +73,14 @@ int main(int argc, char* argv[]) {
 
     cutPicture(pic);
 
-    std::pair<bool, std::string> ans = checker::checkFigures<Square, Circle>(pic);
-    if (ans.first) {
-        std::cout << ans.second;
+    if (pic.height() < 5 || pic.width() < 5) {
+        std::cout << "Неизвестная фигура\n";
+        return 0;
+    }
+
+    auto ans = checker::checkFigures<Square, Circle>(pic);
+    if (ans.has_value()) {
+        std::cout << *ans;
     } else {
         std::cout << "Неизвестная фигура\n";
     }

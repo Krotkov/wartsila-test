@@ -19,9 +19,9 @@ public:
     }
 
     static std::string printInfo(const Picture &pic) {
-        return std::string(
-                "квадрат\nРазмер стороны: " + std::to_string(pic.height()) + "\nКоординаты левого верхнего угла: " +
-                std::to_string(pic.heightShift()) + " " + std::to_string(pic.widthShift()) + "\n");
+        return std::string("квадрат\nРазмер стороны: ").append(std::to_string(pic.height())).append(
+                "\nКоординаты левого верхнего угла: ").append(std::to_string(pic.heightShift())).append(
+                " ").append(std::to_string(pic.widthShift())).append("\n");
     }
 };
 

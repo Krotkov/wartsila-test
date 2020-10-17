@@ -38,8 +38,9 @@ public:
             centerX -= 0.5;
             centerY -= 0.5;
         }
-        return std::string("Круг\n") + "Диаметр: " + std::to_string(pic.height()) + "\nКоординаты центра: " +
-               std::to_string(centerX) + " " + std::to_string(centerY) + "\n";
+        return std::string("Круг\nДиаметр: ").append(std::to_string(pic.height())).append(
+                "\nКоординаты центра: ").append(std::to_string(centerX)).append(" ").append(
+                std::to_string(centerY)).append("\n");
     }
 };
 
