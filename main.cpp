@@ -35,7 +35,7 @@ namespace checker {
 Picture readDataFromFile(const std::string& path) {
     std::ifstream myFile;
     myFile.open(path);
-    char *data = new char[226];
+    char *data = new char[225];
     for (int i = 0; i < 15; ++i) {
         myFile.read(data + i * 15, 15);
         myFile.ignore(1);
