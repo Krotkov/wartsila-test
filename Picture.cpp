@@ -32,20 +32,6 @@ Picture::Picture(const std::shared_ptr<char[]> &data, int height, int width, int
     _realWidth = realW;
 }
 
-bool Picture::operator==(const Picture &other) const {
-    if (_width != other._width || _height != other._height) {
-        return false;
-    }
-    for (auto i = 0; i < _height; i++) {
-        for (auto j = 0; j < _width; j++) {
-            if (this->get(i, j) != other.get(i, j)) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
 double Picture::compare(const Picture &other) const {
     if (_width != other._width || _height != other._height) {
         return false;

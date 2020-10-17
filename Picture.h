@@ -30,8 +30,6 @@ public:
 
     [[nodiscard]] int widthShift() const;
 
-    bool operator==(const Picture &other) const;
-
     [[nodiscard]] double compare(const Picture& other) const;
 
     void print() const;

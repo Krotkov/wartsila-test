@@ -9,7 +9,7 @@ namespace checker {
     template<typename T>
     static std::pair<bool, std::string> checkOne(const Picture &pic) {
         Picture templatePicture = T::drawShape(pic.height(), pic.width());
-        if (templatePicture.compare(pic) >= 0.95) {
+        if (templatePicture.compare(pic) >= 0.93) {
             return {true, T::printInfo(pic)};
         } else {
             return {false, ""};
@@ -44,9 +44,9 @@ namespace checker {
     }
 }
 
-int main() {
+Picture readDataFromFile(const std::string& path) {
     std::ifstream myFile;
-    myFile.open("../test/sample1.txt");
+    myFile.open(path);
     char *data = new char[225];
     for (int i = 0; i < 15; ++i) {
         std::string a;
@@ -56,7 +56,10 @@ int main() {
     Picture pic(15, 15);
     pic.set(data, data + 225);
     delete[] data;
+    return pic;
+}
 
+void cutPicture(Picture& pic) {
     int minX = pic.height(), minY = pic.width(), maxX = -1, maxY = -1;
     for (auto i = 0; i < pic.height(); ++i) {
         for (auto j = 0; j < pic.width(); ++j) {
@@ -71,9 +74,14 @@ int main() {
     int n = maxX - minX + 1;
     int m = maxY - minY + 1;
     pic = pic.getSubPicture(n, m, minX, minY);
+}
+
+int main() {
+    Picture pic = readDataFromFile("../test/nothing2.txt");
+
+    cutPicture(pic);
 
     std::pair<bool, std::string> ans = checker::checkFigures<Square, Circle>(pic);
-
     if (ans.first) {
         std::cout << ans.second;
     } else {

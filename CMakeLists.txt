@@ -3,4 +3,4 @@ project(wartsila)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(wartsila main.cpp Picture.h Picture.cpp Circle.h)
+add_executable(detector main.cpp Picture.h Picture.cpp Circle.h Square.h)
