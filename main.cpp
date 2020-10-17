@@ -40,6 +40,7 @@ Picture readDataFromFile(const std::string& path) {
         myFile.read(data + i * 15, 15);
         myFile.ignore(1);
     }
+    myFile.close();
     Picture pic(15, 15);
     pic.set(data, data + 225);
     delete[] data;
