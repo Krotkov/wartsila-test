@@ -76,8 +76,13 @@ void cutPicture(Picture& pic) {
     pic = pic.getSubPicture(n, m, minX, minY);
 }
 
-int main() {
-    Picture pic = readDataFromFile("../test/nothing2.txt");
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        std::cerr << "Wrong number of arguments. Must be one";
+        return 0;
+    }
+
+    Picture pic = readDataFromFile(argv[1]);
 
     cutPicture(pic);
 
